@@ -1,0 +1,65 @@
+{
+  "name": "refined-antd-changelog",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@8.6.2",
+  "author": "Wuxh <wxh16144@qq.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/Wxh16144/refined-antd-changelog#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wxh16144/refined-antd-changelog.git"
+  },
+  "bugs": "https://github.com/Wxh16144/refined-antd-changelog/issues",
+  "main": "index.user.js",
+  "browser": "index.user.js",
+  "unpkg": "index.user.js",
+  "files": [
+    "index.user.js"
+  ],
+  "scripts": {
+    "sync": "esno ./scripts/sync-dev-deps.ts",
+    "prepare": "npm run sync",
+    "server": "vite",
+    "start": "concurrently --names 'WATCH,HTTP' -c 'blue,magenta' 'npm:dev' 'npm:server'",
+    "dev": "LOCAL=1 vite build",
+    "build": "CI=1 vite build",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "release": "bumpp -x \"node bump.js\" --all"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "semver": "^7.5.4"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.6.1",
+    "@types/jquery": "^3.5.29",
+    "@types/node": "^20.10.6",
+    "@types/semver": "^7.5.6",
+    "bumpp": "^9.2.1",
+    "ci-info": "^4.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "esno": "^4.0.0",
+    "fs-extra": "^11.2.0",
+    "isomorphic-fetch": "^3.0.0",
+    "less": "^4.2.0",
+    "lint-staged": "^15.2.0",
+    "simple-git-hooks": "^2.9.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-banner": "0.7.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}
