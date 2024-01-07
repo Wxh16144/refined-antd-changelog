@@ -19,9 +19,11 @@ function run() {
     .replace(
       /\/\/ @require\s+.*https:\/\/registry\.npmmirror\.com\/refined-antd-changelog.*$/m,
       `// @require     https://registry.npmmirror.com/${name}/${version}/files/index.user.js`,
-    ) + `\n
-; var __${name.replaceAll('-', '_')}__version = ${JSON.stringify(version)};
-    `.trim();
+    )
+    .replace(
+     /;var __rac_version__ =.*;/,
+      `;var __rac_version__ = "${version}";`,
+    )
 
   fs.writeFileSync(metaPath, newContent, 'utf8')
 }

@@ -26,4 +26,4 @@
  * 这里直接写了版本号，因为这个文件是在打包时生成的，
  * 如需审查代码，请移步 https://github.com/Wxh16144/refined-antd-changelog#readme
  */
-; var __refined_antd_changelog__version = "0.0.1-beta.0";; var __refined_antd_changelog__version = "0.0.1-beta.0";; var __refined_antd_changelog__version = "0.0.1-beta.1";
+;var __rac_version__ = "0.0.1-beta.1";
