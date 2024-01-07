@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
     plugins: [banner({
       content: (fileName: string) => {
         if (fileName.endsWith('.user.js'))
-          return readFileSync(join(__dirname, 'src/meta.js'), 'utf-8')
+          return readFileSync(join(__dirname, 'src/meta.user.js'), 'utf-8')
 
         return null
       },

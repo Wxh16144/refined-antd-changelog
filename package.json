@@ -15,7 +15,7 @@
   "browser": "index.user.js",
   "unpkg": "index.user.js",
   "files": [
-    "index.user.js"
+    "**/*.user.js"
   ],
   "scripts": {
     "sync": "esno ./scripts/sync-dev-deps.ts",
