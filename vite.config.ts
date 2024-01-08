@@ -8,15 +8,26 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const outDir = process.cwd()
 
+  const bannerText = readFileSync(join(__dirname, 'src/meta.user.js'), 'utf-8');
+  const LOCAL = process.env.LOCAL || env.LOCAL
+
   return {
     // https://vitejs.dev/config/#using-environment-variables-in-config
     define: {
-      LOCAL: JSON.stringify(process.env.LOCAL || env.LOCAL),
+      LOCAL: JSON.stringify(LOCAL),
     },
     plugins: [banner({
       content: (fileName: string) => {
-        if (fileName.endsWith('.user.js'))
-          return readFileSync(join(__dirname, 'src/meta.user.js'), 'utf-8')
+        if (fileName.endsWith('.user.js')) {
+          if (LOCAL !== undefined) {
+            return bannerText.replace(
+              /\/\/ @require\s+.*https:\/\/registry\.npmmirror\.com\/refined-antd-changelog.*$/m,
+              '',
+            )
+          }
+
+          return bannerText
+        }
 
         return null
       },
