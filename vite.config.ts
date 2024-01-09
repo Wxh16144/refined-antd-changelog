@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 import { defineConfig, loadEnv } from 'vite'
 import { isCI } from 'ci-info'
 import banner from 'vite-plugin-banner'
+import { name } from './package.json'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -21,7 +22,7 @@ export default defineConfig(({ mode }) => {
         if (fileName.endsWith('.user.js')) {
           if (LOCAL !== undefined) {
             return bannerText.replace(
-              /\/\/ @require\s+.*https:\/\/registry\.npmmirror\.com\/refined-antd-changelog.*$/m,
+              new RegExp(String.raw`// @require.*https://registry.npmmirror.com/${name}.*$`, 'm'),
               '',
             )
           }
