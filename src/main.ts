@@ -135,16 +135,17 @@ async function run() {
   // fixme: 注水问题不知道怎么解决，添加一个悬浮球，点击后再执行（或者等前面 10s 后自动执行）
   $('<div>').css({
     position: 'fixed',
-    inset: 'auto 2em 50% auto',
-    width: '1.5em',
-    height: '1.5em',
-    fontSize: '24px',
+    inset: 'auto 72px 48px auto',
+    width: '40px',
+    lineHeight: '40px',
+    fontSize: '1.5rem',
     userSelect: 'none',
     textAlign: 'center',
     color: '#fff',
     cursor: 'pointer',
     borderRadius: '50%',
     zIndex: Number.MAX_SAFE_INTEGER,
+    background: 'rgba(0,0,0,.5)',
   })
     .on('click', _run)
     .on('mouseenter', function () {
