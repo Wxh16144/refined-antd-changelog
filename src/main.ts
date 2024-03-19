@@ -146,6 +146,8 @@ async function run() {
     borderRadius: '50%',
     zIndex: Number.MAX_SAFE_INTEGER,
     background: 'rgba(0,0,0,.5)',
+    transform: 'scale(0.68)',
+    transformOrigin: 'center right',
   })
     .on('click', _run)
     .on('mouseenter', function () {
