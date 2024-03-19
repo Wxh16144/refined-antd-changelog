@@ -66,13 +66,13 @@ async function run() {
 
   const COLLAPSED_DEPRECATED_DETAIL = useOptions(
     `${OPTIONS_PREFIX}_collapsed_deprecated_detail`,
-    'collapsedDeprecatedDetail',
+    '折叠弃用版本',
     false,
   )
 
   const DISPLAY_ONLY_DEPRECATED = useOptions(
     `${OPTIONS_PREFIX}_display_only_deprecated`,
-    'displayOnlyDeprecated',
+    '仅显示弃用版本',
     false,
   )
 
@@ -135,17 +135,17 @@ async function run() {
   // fixme: 注水问题不知道怎么解决，添加一个悬浮球，点击后再执行（或者等前面 10s 后自动执行）
   $('<div>').css({
     position: 'fixed',
-    inset: 'auto 1em 1em auto',
+    inset: 'auto 72px 48px auto',
+    width: '40px',
+    lineHeight: '40px',
+    fontSize: '1.5rem',
     userSelect: 'none',
-    width: '1.8em',
-    height: '1.8em',
-    lineHeight: '1.8em',
     textAlign: 'center',
-    background: 'rgba(0,0,0,.5)',
     color: '#fff',
     cursor: 'pointer',
     borderRadius: '50%',
     zIndex: Number.MAX_SAFE_INTEGER,
+    background: 'rgba(0,0,0,.5)',
   })
     .on('click', _run)
     .on('mouseenter', function () {
