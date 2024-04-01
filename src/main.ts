@@ -17,7 +17,8 @@ const fetchJSON = fetchJSONFactory()
 const detectVersion = (function () {
   const selector = [
     'header .version',
-    'a[href*="changelog"] span',
+    // 'a[href*="changelog"] span', // 5.x ~ 5.14.3 是好的
+    'a[href*="changelog"] span:last-child' // <= https://github.com/ant-design/ant-design/commit/f5e9d2df450d2f917620fabf0074f847a9bbbe54
   ]
   let version: string | undefined
 
