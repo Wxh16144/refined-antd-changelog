@@ -15,7 +15,7 @@ export const CDN: Record<string, CDN_ITEM> = {
   },
 }
 
-const fetchJSONFactory = function (fetcher = fetch) {
+const fetchJSONFactory = function (fetcher: any = fetch) {
   const cache = new Map<string, any>()
 
   return async function (url: string) {
