@@ -2,6 +2,7 @@ import {
   clean as semverClean,
   valid as semverValid,
 } from 'semver'
+import './jq';
 import log from './logger'
 import type { AnalyzeResult, RefinedAntdConfig } from './type'
 import createAnalyzeBugVersionsFactory from './bug-versions'
@@ -131,9 +132,9 @@ async function run() {
   }
 
   // $(_run); // 会有 react ssr 注水问题
-  setTimeout(_run, 10000) // 10s 后再执行，避免 react ssr 注水问题
+  setTimeout(_run, 5 * 1000) // 5s 后再执行，避免 react ssr 注水问题
 
-  // fixme: 注水问题不知道怎么解决，添加一个悬浮球，点击后再执行（或者等前面 10s 后自动执行）
+  // fixme: 注水问题不知道怎么解决，添加一个悬浮球，点击后再执行（或者等前面 5s 后自动执行）
   $('<div>').css({
     position: 'fixed',
     inset: 'auto 72px 48px auto',
