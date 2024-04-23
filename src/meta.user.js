@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Refined Ant Design Changelog
 // @namespace refined-antd-changelog
-// @version      1.1.0
+// @version      1.2.0
 // @description Collapse / mark non-recommended versions to get a clean and fresh journal page
 // @license MIT
 // @author Wuxh <wxh16144@qq.com>
@@ -20,11 +20,11 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_xmlhttpRequest
-// @require     https://registry.npmmirror.com/refined-antd-changelog/1.1.0/files/index.user.js
+// @require     https://registry.npmmirror.com/refined-antd-changelog/1.2.0/files/index.user.js
 // ==/UserScript==
 
 /**
  * 这里直接写了版本号，因为这个文件是在打包时生成的，
  * 如需审查代码，请移步 https://github.com/Wxh16144/refined-antd-changelog#readme
  */
-;var __rac_version__ = "1.1.0";
+;var __rac_version__ = "1.2.0";
