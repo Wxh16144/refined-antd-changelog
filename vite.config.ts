@@ -15,7 +15,8 @@ export default defineConfig(({ mode }) => {
   return {
     // https://vitejs.dev/config/#using-environment-variables-in-config
     define: {
-      LOCAL: JSON.stringify(LOCAL),
+      // https://vitejs.dev/config/shared-options.html#envprefix
+      'import.meta.env.LOCAL': JSON.stringify(LOCAL),
     },
     plugins: [banner({
       content: (fileName: string) => {
@@ -38,6 +39,7 @@ export default defineConfig(({ mode }) => {
     server: {
       strictPort: true,
       port: Number(env.SERVER_PORT) ?? 8089,
+      open: true,
     },
     build: {
       minify: false,

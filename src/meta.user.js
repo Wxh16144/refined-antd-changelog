@@ -14,10 +14,12 @@
 // @match https://4x-ant-design.antgroup.com/changelog*
 // @match https://4x.ant.design/changelog*
 // @match https://3x.ant.design/changelog*
+// @match https://www.npmjs.com/package/antd*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
+// @grant        GM_xmlhttpRequest
 // @require     https://registry.npmmirror.com/refined-antd-changelog/1.1.0/files/index.user.js
 // ==/UserScript==
 

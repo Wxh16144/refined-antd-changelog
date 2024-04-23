@@ -10,10 +10,48 @@ import refinedAntd5 from './refinedAntd5'
 import refinedAntd4 from './refinedAntd4'
 import fetchJSONFactory, { CDN } from './fetchJSON'
 import refinedAntd3 from './refinedAntd3'
+import refinedAntdNpm from './refinedAntdNpm'
 import { TRACK_CATEGORY_KEY } from './createDetails'
 
 // ====== utils ======
-const fetchJSON = fetchJSONFactory()
+function isAntdWebsite() {
+  const RE = /ant[.-\s]design/i
+  // return RE.test(document.title) || RE.test(document.URL)
+  return [
+    document.title,
+    document.URL,
+    $('meta[name="generator"]').attr('content'),
+  ].some(v => RE.test(v as string))
+}
+
+function isNpmJSWithAntd() {
+  const isNpmJS = window.location.host === 'www.npmjs.com'
+  const isAntd = window.location.pathname.includes('package/antd');
+
+  return isNpmJS && isAntd
+}
+
+async function xhr(url: string) {
+  if (typeof GM_xmlhttpRequest === 'undefined') {
+    return fetch;
+  }
+
+  const fn = () => new Promise((resolve, reject) => {
+    GM_xmlhttpRequest({
+      method: 'GET',
+      url,
+      responseType: 'json',
+      onload(res: any) {
+        resolve(res.response)
+      },
+      onerror: reject,
+    })
+  });
+
+  return { json: fn };
+};
+
+const fetchJSON = fetchJSONFactory(xhr)
 
 const detectVersion = (function () {
   const selector = [
@@ -50,17 +88,19 @@ function useOptions<T>(key: string, title: string, defaultValue: T) {
     },
     set value(v) {
       value = v
-      GM_setValue(key, v)
+      GM_setValue?.(key, v)
       location.reload()
     },
   }
 
-  GM_registerMenuCommand(`${title}: ${value ? '✅' : '❌'}`, () => {
+  GM_registerMenuCommand?.(`${title}: ${value ? '✅' : '❌'}`, () => {
     ref.value = !value
   })
 
   return ref as { value: T }
 }
+
+
 
 // ########################################################################
 async function run() {
@@ -85,7 +125,11 @@ async function run() {
 
   let analyzeResult: AnalyzeResult
 
-  const cndTarget = import.meta.env.LOCAL !== undefined ? CDN.local : CDN.cnpm
+  const cndTarget = import.meta.env.LOCAL !== undefined
+    ? CDN.local
+    : isNpmJSWithAntd()
+      ? CDN.remote
+      : CDN.cnpm
 
   try {
     const [antdJSON, bugVersionsJSON] = await Promise.all([
@@ -118,21 +162,36 @@ async function run() {
   })
 
   const refinedAntdConfig = Object.assign({ analyzeResult }, config)
+
   const _run = () => {
     if ($(`[${TRACK_CATEGORY_KEY}]`).length)
       return log.warn('Already refined, skip!')
 
-    if (is_V5)
-      refinedAntd5(refinedAntdConfig)
-    if (is_V4)
-      refinedAntd4(refinedAntdConfig)
-    if (is_V3)
-      refinedAntd3(refinedAntdConfig)
+    if (isAntdWebsite()) {
+      if (is_V5)
+        refinedAntd5(refinedAntdConfig)
+      if (is_V4)
+        refinedAntd4(refinedAntdConfig)
+      if (is_V3)
+        refinedAntd3(refinedAntdConfig)
+    } else if (isNpmJSWithAntd()) {
+      refinedAntdNpm(refinedAntdConfig)
+    }
     $('html, body')?.scrollTop?.(0)
   }
 
-  // $(_run); // 会有 react ssr 注水问题
-  setTimeout(_run, 5 * 1000) // 5s 后再执行，避免 react ssr 注水问题
+  function _interval(count: number, fn: () => void) {
+    const delayTime = isAntdWebsite() ? 5 : 1
+    let i = 0
+    const timer = setInterval(() => {
+      fn()
+      if (++i >= count) {
+        clearInterval(timer)
+      }
+    }, delayTime * 1000)
+  }
+
+  _interval(3, _run)
 
   // fixme: 注水问题不知道怎么解决，添加一个悬浮球，点击后再执行（或者等前面 5s 后自动执行）
   $('<div>').css({
