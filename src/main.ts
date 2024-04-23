@@ -191,38 +191,35 @@ async function run() {
     }, delayTime * 1000)
   }
 
-  _interval(3, _run)
+  _interval(3, _run);
 
+  const size = isAntdWebsite() ? 40 : 68;
   // fixme: 注水问题不知道怎么解决，添加一个悬浮球，点击后再执行（或者等前面 5s 后自动执行）
   $('<div>').css({
     position: 'fixed',
     inset: 'auto 72px 48px auto',
-    width: '40px',
-    lineHeight: '40px',
-    fontSize: '1.5rem',
+    width: `${size}px`,
+    height: `${size}px`,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     userSelect: 'none',
-    textAlign: 'center',
-    color: '#fff',
     cursor: 'pointer',
     borderRadius: '50%',
     zIndex: Number.MAX_SAFE_INTEGER,
-    background: 'rgba(0,0,0,.5)',
     transform: 'scale(0.68)',
     transformOrigin: 'center right',
+    background: 'url(https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg) no-repeat center center / 100% 100%',
+    boxShadow: `0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05)`
   })
     .on('click', _run)
-    .on('mouseenter', function () {
-      $(this).css('background', 'rgba(0,0,0,.8)')
-    })
-    .on('mouseleave', function () {
-      $(this).css('background', 'rgba(0,0,0,.5)')
-    })
     .attr({
       'title': '点击清理日志',
       'id': 'refined-antd-changelog_ball',
       'data-ref': 'https://github.com/Wxh16144/refined-antd-changelog',
     })
-    .text('🏀')
     .appendTo('body')
 }
 
