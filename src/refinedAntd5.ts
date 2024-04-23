@@ -63,6 +63,41 @@ function refinedAntd5(opt: RefinedAntdOptions) {
       originVersionDetail.replaceWith(newDetails)
     }
   }
+
+  // 清理锚点
+  refinedAntd5Anchor(opt);
+}
+
+// 清理锚点
+function refinedAntd5Anchor(opt: RefinedAntdOptions) {
+  const { displayOnlyDeprecated, analyzeResult } = opt
+  const anchors = $('div.ant-anchor > div[class~="ant-anchor-link"]');
+
+  for (let i = 0; i < anchors.length; i++) {
+    const el = anchors[i]
+    const textVersion = $(el).text()
+
+    if (!textVersion || !semverValid(textVersion))
+      continue
+
+    const version = semverClean(textVersion)!
+
+    const { recommendVersion, reason } = analyzeResult.get(version) || {}
+
+    if (analyzeResult.has(version)) {
+      $(el)
+        .attr('data-version', version)
+        .attr('data-recommend-version', recommendVersion!)
+        .css({ 'text-decoration': 'line-through', 'color': 'red' })
+        .find('*').css({
+          'color': 'red',
+        });
+    } else {
+      if (displayOnlyDeprecated) {
+        $(el).attr({ hidden: true })
+      }
+    }
+  }
 }
 
 export default refinedAntd5
