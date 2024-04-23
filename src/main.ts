@@ -14,7 +14,6 @@ import refinedAntdNpm from './refinedAntdNpm'
 import { TRACK_CATEGORY_KEY } from './createDetails'
 
 // ====== utils ======
-
 function isAntdWebsite() {
   const RE = /ant[.-\s]design/i
   // return RE.test(document.title) || RE.test(document.URL)
@@ -33,7 +32,7 @@ function isNpmJSWithAntd() {
 }
 
 async function xhr(url: string) {
-  if(typeof GM_xmlhttpRequest === 'undefined'){
+  if (typeof GM_xmlhttpRequest === 'undefined') {
     return fetch;
   }
 

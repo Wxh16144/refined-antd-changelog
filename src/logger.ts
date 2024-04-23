@@ -5,7 +5,14 @@ class Logger {
   version = version
 
   constructor(prefix = name) {
-    this.prefix = `[${prefix.toLocaleUpperCase()}: v${version}]`
+    let _prefix = `[${prefix.toLocaleUpperCase()}: v${version}]`
+
+    if (import.meta.env.LOCAL) {
+      console.log(`%c LOCAL! ${_prefix}`, 'color: #faad14; font-size: 1rem; font-weight: bold;')
+      _prefix = `LOCAL! ${_prefix}`
+    }
+
+    this.prefix = _prefix
   }
 
   warn(...args: any[]) {
