@@ -18,7 +18,6 @@
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @require     https://code.jquery.com/jquery-3.6.1.slim.min.js
 // @require     https://registry.npmmirror.com/refined-antd-changelog/1.0.2/files/index.user.js
 // ==/UserScript==
 
