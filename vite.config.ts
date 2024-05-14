@@ -21,14 +21,10 @@ export default defineConfig(({ mode }) => {
     plugins: [banner({
       content: (fileName: string) => {
         if (fileName.endsWith('.user.js')) {
-          if (LOCAL !== undefined) {
-            return bannerText.replace(
-              new RegExp(String.raw`// @require.*https://registry.npmmirror.com/${name}.*$`, 'm'),
-              '',
-            )
-          }
-
-          return bannerText
+          return bannerText.replace(
+            new RegExp(String.raw`// @require.*https://registry.npmmirror.com/${name}.*$`, 'm'),
+            '',
+          )
         }
 
         return null
