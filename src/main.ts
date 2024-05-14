@@ -53,6 +53,19 @@ async function xhr(url: string) {
 
 const fetchJSON = fetchJSONFactory(xhr)
 
+// 失败了从下一个 CDN 获取
+async function requestNextOnFailure(urls: string[], verifier: (json: any) => boolean) {
+  for (const url of urls) {
+    try {
+      const json = await fetchJSON(url)
+      if (verifier(json)) return json;
+    } catch (e) {
+      log.error(e)
+    }
+  }
+  return Promise.reject(`All requests failed: ${[, ...urls].join('\n')}`)
+}
+
 const detectVersion = (function () {
   const selector = [
     'header .version',
@@ -124,17 +137,29 @@ async function run() {
   const is_V3 = currentAntdVersion?.startsWith('3.')
 
   let analyzeResult: AnalyzeResult
+  const cdnTargets = [CDN.cnpm, CDN.remote];
 
-  const cndTarget = import.meta.env.LOCAL !== undefined
-    ? CDN.local
-    : isNpmJSWithAntd()
-      ? CDN.remote
-      : CDN.cnpm
+  if (isNpmJSWithAntd()) cdnTargets.reverse(); // 优先使用 npmjs.com
+
+  if (import.meta.env.LOCAL !== undefined) {
+    cdnTargets.unshift(CDN.local); // 本地优先
+  }
+
+  const antdUrls = cdnTargets.map(({ antd }) => antd)
+  const bugVersionsUrls = cdnTargets.map(({ BUG_VERSIONS }) => BUG_VERSIONS)
 
   try {
     const [antdJSON, bugVersionsJSON] = await Promise.all([
-      fetchJSON(cndTarget.antd),
-      fetchJSON(cndTarget.BUG_VERSIONS),
+      requestNextOnFailure(
+        antdUrls,
+        (json) => !!json?.time
+      ),
+      requestNextOnFailure(
+        bugVersionsUrls,
+        (json) => typeof json === 'object' &&
+          json !== null &&
+          Object.keys(json).length > 3 // 至少 3 项, antd Christmas egg. 就有 3 项了...
+      ),
     ])
 
     analyzeResult = await createAnalyzeBugVersionsFactory({
@@ -158,7 +183,7 @@ async function run() {
     currentAntdVersion,
     config,
     analyzeResult,
-    cndTarget,
+    cdnTargets,
   })
 
   const refinedAntdConfig = Object.assign({ analyzeResult }, config)
@@ -219,6 +244,10 @@ async function run() {
       'title': '点击清理日志',
       'id': 'refined-antd-changelog_ball',
       'data-ref': 'https://github.com/Wxh16144/refined-antd-changelog',
+    })
+    .on('contextmenu', (e) => {
+      // 右键打开项目地址不过分吧？（挺过分的）
+      // window.open($(e.currentTarget).attr('data-ref'))
     })
     .appendTo('body')
 }
