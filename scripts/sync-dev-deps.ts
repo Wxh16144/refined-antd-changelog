@@ -27,7 +27,7 @@ async function main() {
     }
   };
 
-  download(CDN.remote).catch(() => {
+  await download(CDN.remote).catch(() => {
     console.warn('remote failed, try cnpm')
     return download(CDN.cnpm)
   })
