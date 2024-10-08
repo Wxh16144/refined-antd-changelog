@@ -16,6 +16,7 @@ function refinedAntd5(opt: RefinedAntdOptions) {
   for (let i = 0; i < change.length; i++) {
     const el = change[i]
     const textVersion = $(el).text()
+      .match(/\d+\.\d+\.\d+/)?.[0]
 
     if (!textVersion || !semverValid(textVersion))
       continue
@@ -65,7 +66,10 @@ function refinedAntd5(opt: RefinedAntdOptions) {
   }
 
   // 清理锚点
-  refinedAntd5Anchor(opt);
+  setTimeout(() => {
+    // antd 官网的锚点出现极慢，延迟 2s 再执行吧...
+    refinedAntd5Anchor(opt);
+  }, 2000);
 }
 
 // 清理锚点
@@ -76,6 +80,7 @@ function refinedAntd5Anchor(opt: RefinedAntdOptions) {
   for (let i = 0; i < anchors.length; i++) {
     const el = anchors[i]
     const textVersion = $(el).text()
+      .match(/\d+\.\d+\.\d+/)?.[0]
 
     if (!textVersion || !semverValid(textVersion))
       continue

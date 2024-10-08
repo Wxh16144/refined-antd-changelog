@@ -206,16 +206,22 @@ async function run() {
     if ($(`[${TRACK_CATEGORY_KEY}]`).length)
       return log.warn('Already refined, skip!')
 
-    if (isAntdWebsite()) {
-      if (is_V5)
-        refinedAntd5(refinedAntdConfig)
-      if (is_V4)
-        refinedAntd4(refinedAntdConfig)
-      if (is_V3)
-        refinedAntd3(refinedAntdConfig)
-    } else if (isNpmJSWithAntd()) {
-      refinedAntdNpm(refinedAntdConfig)
+    // === Right here! ===
+    try {
+      if (isAntdWebsite()) {
+        if (is_V5)
+          refinedAntd5(refinedAntdConfig)
+        if (is_V4)
+          refinedAntd4(refinedAntdConfig)
+        if (is_V3)
+          refinedAntd3(refinedAntdConfig)
+      } else if (isNpmJSWithAntd()) {
+        refinedAntdNpm(refinedAntdConfig)
+      }
+    } catch (e) {
+      log.error(`Refine failed!`, e)
     }
+
     $('html, body')?.scrollTop?.(0)
   }
 
