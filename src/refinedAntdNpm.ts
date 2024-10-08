@@ -28,9 +28,10 @@ function refinedAntdNpm(opt: RefinedAntdOptions) {
   const { collapsedDeprecatedDetail, displayOnlyDeprecated, analyzeResult } = opt
 
   if (!isVersionTab()) return;
-
-  // #tabpanel-versions 的最后一个 ul 元素除了第一个 li 元素，其他都是版本号
-  const versionList = $('#tabpanel-versions ul:last-child li:not(:first-child)');
+  // #version-history 同级别的元素 table 里面的 tr 元素(除了第一个)
+  const versionList = $('#version-history')
+    .parent()
+    .find('table:last tr:not(:first-child)')
 
   for (let i = 0; i < versionList.length; i++) {
     const el = versionList[i];
@@ -51,16 +52,15 @@ function refinedAntdNpm(opt: RefinedAntdOptions) {
         .attr('data-recommend-version', recommendVersion!)
         .css({ /* 'text-decoration': 'line-through', */ 'color': 'red' })
 
-      $(el).find('*').css({
-        'color': 'red',
-      });
+      $(el).find('*').css({ 'color': 'red' })
+      $(el).find('td:first').css({ display: 'flex', alignItems: 'center' })
 
       const whyDeprecated = $('<span>')
         .attr({
           [TRACK_CATEGORY_KEY]: 'details',
           title: 'Click to see the reason',
         })
-        .css({ marginLeft: '5px', cursor: 'help' })
+        .css({ marginLeft: '5px', cursor: 'help', whiteSpace: 'nowrap' })
         .on('click', () => {
           const firstReason = reason?.[0]
           if (firstReason) {
