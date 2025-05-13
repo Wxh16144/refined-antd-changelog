@@ -6,13 +6,10 @@
 
 ## Screenshot
 
-### antd5.x
-
-[![antd5](https://github.com/Wxh16144/refined-antd-changelog/assets/32004925/c269e70e-e8c0-4815-b5ef-0c502d2f2600)](https://ant.design/changelog-cn)
-
-### antd4.x
-
-[![antd4](https://github.com/Wxh16144/refined-antd-changelog/assets/32004925/44eefee9-fe5a-4159-9f9f-da99f01078f4)](https://4x.ant.design/changelog-cn)
+<!-- prettier-ignore -->
+| antd v5 | antd v4 | antd v3 |
+| --- | --- | --- |
+| [![antd5](https://github.com/Wxh16144/refined-antd-changelog/assets/32004925/c269e70e-e8c0-4815-b5ef-0c502d2f2600)](https://ant.design/changelog-cn) | [![antd4](https://github.com/Wxh16144/refined-antd-changelog/assets/32004925/44eefee9-fe5a-4159-9f9f-da99f01078f4)](https://4x.ant.design/changelog-cn)    |  [![antd3](https://github.com/user-attachments/assets/caaa0f0c-e013-4c5d-81a2-c7630201176a)](https://3x.ant.design/changelog-cn)  |
 
 ### npmjs/antd
 
