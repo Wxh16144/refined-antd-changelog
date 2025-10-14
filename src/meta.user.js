@@ -15,6 +15,9 @@
 // @match https://4x.ant.design/changelog*
 // @match https://3x.ant.design/changelog*
 // @match https://www.npmjs.com/package/antd*
+// @content registry.npmmirror.com
+// @content unpkg.com
+// @content localhost
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
