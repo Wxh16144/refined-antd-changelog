@@ -18,20 +18,32 @@ export default defineConfig(({ mode }) => {
       // https://vitejs.dev/config/shared-options.html#envprefix
       'import.meta.env.LOCAL': JSON.stringify(LOCAL),
     },
-    plugins: [banner({
-      content: (fileName: string) => {
-        if (fileName.endsWith('.user.js')) {
-          return bannerText.replace(
-            new RegExp(String.raw`// @require.*https://registry.npmmirror.com/${name}.*$`, 'm'),
-            '',
-          )
-        }
+    plugins: [
+      banner({
+        content: (fileName: string) => {
+          if (fileName.endsWith('.user.js')) {
+            return bannerText.replace(
+              new RegExp(String.raw`// @require.*https://registry.npmmirror.com/${name}.*$`, 'm'),
+              '',
+            )
+          }
 
-        return null
-      },
-      outDir,
-      verify: false,
-    })],
+          return null
+        },
+        outDir,
+        verify: false,
+      }),
+      // https://github.com/vitejs/vite/issues/9825
+      {
+        name: 'remove-sourcemaps',
+        transform(code) {
+          return {
+            code,
+            map: { mappings: '' }
+          }
+        }
+      }
+    ],
     server: {
       strictPort: true,
       port: Number(env.SERVER_PORT) ?? 8089,
@@ -48,6 +60,8 @@ export default defineConfig(({ mode }) => {
         formats: ['iife'],
       },
       outDir,
+      // https://github.com/vitejs/vite/issues/9825
+      // sourcemap: false,
     },
   }
 })
