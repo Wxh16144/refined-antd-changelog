@@ -69,11 +69,14 @@ async function requestNextOnFailure(urls: string[], verifier: (json: any) => boo
 const detectVersion = (function () {
   const selector = [
     'header .version', // 适用于 4.x 和 3.x
+    // =========== v5 ==========
     // 'a[href*="changelog"] span', // 5.x ~ 5.14.3 是好的
     'a[href*="changelog"] span:last-child', // <= https://github.com/ant-design/ant-design/commit/f5e9d2df450d2f917620fabf0074f847a9bbbe54 (5.14.3 ~ 5.20.3 适用)
     'a[href*="changelog"] > span:last-child', // https://github.com/ant-design/ant-design/pull/50625 又改了...
+    '.markdown >h2[id^="5"]:first', // 5.x 最后的手段
 
-    '.markdown >h2[id^="5"]:first' // v5 再一次用 changelog 内容兜底
+    // =========== v6 ==========
+    '.markdown >h2[id^="6"]:first' // 6.x
   ]
   let version: string | undefined
 
@@ -136,17 +139,18 @@ async function run() {
 
   const currentAntdVersion = detectVersion()
 
-  const is_V5 = (function () {
+  const is_V6 = (function () {
     if (currentAntdVersion) {
-      return currentAntdVersion.startsWith('5.');
+      return currentAntdVersion.startsWith('6.');
     }
 
-    // 经常遇到没有版本号的情况，这时候就默认当作 5.x 处理。
-    log.error('No version detected, assume it is 5.x, please report this issue to https://github.com/Wxh16144/refined-antd-changelog')
+    // 经常遇到没有版本号的情况，这时候就默认当作 6.x 处理。
+    log.error('No version detected, assume it is 6.x, please report this issue to https://github.com/Wxh16144/refined-antd-changelog')
 
     return true
   }());
 
+  const is_V5 = currentAntdVersion?.startsWith('5.')
   const is_V4 = currentAntdVersion?.startsWith('4.')
   const is_V3 = currentAntdVersion?.startsWith('3.')
 
@@ -209,6 +213,8 @@ async function run() {
     // === Right here! ===
     try {
       if (isAntdWebsite()) {
+        if (is_V6)
+          refinedAntd5(refinedAntdConfig, { v6: true })
         if (is_V5)
           refinedAntd5(refinedAntdConfig)
         if (is_V4)
