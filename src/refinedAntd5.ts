@@ -10,12 +10,13 @@ import createDetails from './createDetails'
  */
 function refinedAntd5(opt: RefinedAntdOptions) {
   const { collapsedDeprecatedDetail, displayOnlyDeprecated, analyzeResult } = opt
-  const change = $('.markdown >h2[id^="5"]')
+  const change = $('.markdown div.refined-changelog:has(h2[id^="5"])')
   const allVersionsAnchor: Map<string, HTMLElement> = new Map()
 
   for (let i = 0; i < change.length; i++) {
     const el = change[i]
-    const textVersion = $(el).text()
+    const versionEl = $(el).find('h2[id^="5"]').get(0)!
+    const textVersion = $(versionEl).text()
       .match(/\d+\.\d+\.\d+/)?.[0]
 
     if (!textVersion || !semverValid(textVersion))
@@ -23,21 +24,21 @@ function refinedAntd5(opt: RefinedAntdOptions) {
 
     const version = semverClean(textVersion)!
     allVersionsAnchor.set(version, $(el).find('a').get(0)!)
-    const originVersionDetail = $(el).next().next()
+    const versionWarp = $(el).children().first()
+    const originVersionDetail = $(el).find('div.changelog-details')
     const { recommendVersion, reason } = analyzeResult.get(version) || {}
 
     if (!analyzeResult.has(version)) {
       if (displayOnlyDeprecated) {
-        ;[el, $(el).next(), originVersionDetail].forEach(
-          el => $(el).attr({ hidden: true }),
-        )
+        $(el).attr({ hidden: true })
       }
       continue
     }
 
-    $(el)
+    $(versionWarp)
       .attr('data-version', version)
       .attr('data-recommend-version', recommendVersion!)
+      .find('>h2')
       .css({
         'text-decoration': 'line-through',
         'color': 'red',
