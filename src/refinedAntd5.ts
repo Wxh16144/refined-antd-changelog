@@ -5,17 +5,28 @@ import {
 import type { RefinedAntdOptions } from './type'
 import createDetails from './createDetails'
 
+interface RefinedAntd5ExtraOptions {
+  v6: boolean;
+}
+
 /**
  * refined-antd5
+ * 
+ * antd v6 changelog 页面结构变化应该不大，暂时不单独维护一个文件了，通过 opt 参数区分处理即可。
  */
-function refinedAntd5(opt: RefinedAntdOptions) {
+function refinedAntd5(opt: RefinedAntdOptions, extraOpt?: RefinedAntd5ExtraOptions) {
   const { collapsedDeprecatedDetail, displayOnlyDeprecated, analyzeResult } = opt
-  const change = $('.markdown div.refined-changelog:has(h2[id^="5"])')
+  const { v6 } = extraOpt ?? {}
+  
+  const versionSelector = `h2[id^="${v6 ? 6 : 5}"]`;
+
+  const selector = `.markdown div.refined-changelog:has(${versionSelector})`
+  const change = $(selector)
   const allVersionsAnchor: Map<string, HTMLElement> = new Map()
 
   for (let i = 0; i < change.length; i++) {
     const el = change[i]
-    const versionEl = $(el).find('h2[id^="5"]').get(0)!
+    const versionEl = $(el).find(versionSelector).get(0)!
     const textVersion = $(versionEl).text()
       .match(/\d+\.\d+\.\d+/)?.[0]
 
