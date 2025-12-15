@@ -1,7 +1,7 @@
 {
   "name": "refined-antd-changelog",
   "type": "module",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "packageManager": "pnpm@8.6.2",
   "author": "Wuxh <wxh16144@qq.com>",
   "license": "MIT",
