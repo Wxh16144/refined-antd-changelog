@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Refined Ant Design Changelog
 // @namespace refined-antd-changelog
-// @version      1.4.1
+// @version      1.4.2
 // @description Collapse / mark non-recommended versions to get a clean and fresh journal page
 // @license MIT
 // @author Wuxh <wxh16144@qq.com>
@@ -31,7 +31,7 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_xmlhttpRequest
-// @require     https://registry.npmmirror.com/refined-antd-changelog/1.4.1/files/index.user.js
+// @require     https://registry.npmmirror.com/refined-antd-changelog/1.4.2/files/index.user.js
 // ==/UserScript==
 
 /**
@@ -40,5 +40,5 @@
  */
 
 // =============================
-// ====== Version: 1.4.1 =======
+// ====== Version: 1.4.2 =======
 // =============================
