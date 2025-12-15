@@ -21,8 +21,8 @@ function run() {
       `// @require     https://registry.npmmirror.com/${name}/${version}/files/index.user.js`,
     )
     .replace(
-      /;var __rac_version__ =.*;/,
-      `;var __rac_version__ = "${version}";`,
+      /\/\/ ====== Version: .* =======/m,
+      `// ====== Version: ${version} =======`,
     )
 
   fs.writeFileSync(metaPath, newContent, 'utf8')
